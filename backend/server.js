@@ -26,7 +26,6 @@ router.get('/api/search', async (ctx, next) => {
     }
 
     const { q } = ctx.request.query;
-    console.log(q);
 
     return new Promise((resolve, reject) => {
         setTimeout(() => {

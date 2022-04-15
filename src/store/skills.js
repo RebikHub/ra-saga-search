@@ -1,55 +1,51 @@
-import {
-  SEARCH_SKILLS_REQUEST,
-  SEARCH_SKILLS_FAILURE,
-  SEARCH_SKILLS_SUCCESS,
-  CHANGE_SEARCH_FIELD,
-  SEARCH_SKILLS_CLEAR
-} from './actions'
+import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-  items: [],
-  loading: false,
-  error: null,
-  search: '',
-};
-
-export default function skillsReducer(state = initialState, action) {
-  switch (action.type) {
-    case SEARCH_SKILLS_REQUEST:
-      return {
-        ...state,
-        loading: true,
-        error: null,
+export const skillsSlice = createSlice({
+  name: 'skillsSlice',
+  initialState: {
+    items: [],
+    loading: false,
+    error: null,
+    search: '',
+  },
+  reducers: {
+    searchSkillsRequest: (state, action) => {
+      state.loading = true;
+      state.search = action.payload;
+    },
+    
+    searchSkillsFailure: (state, action) => {
+      console.log(action.payload);
+      state.loading = false;
+      state.error = action.payload;
+    },
+    
+    searchSkillsSuccess: (state, action) => {
+      if (state.search !== '') {
+        state.items = action.payload;
       };
-    case SEARCH_SKILLS_FAILURE:
-      const {error} = action.payload;
-      return {
-        ...state,
-        loading: false,
-        error,
-      };
-    case SEARCH_SKILLS_SUCCESS:
-      const {items} = action.payload;
-      return {
-        ...state,
-        items,
-        loading: false,
-        error: null,
-      };
-    case CHANGE_SEARCH_FIELD:
-      const {search} = action.payload;
-      return {
-        ...state,
-        search
-      };
-    case SEARCH_SKILLS_CLEAR:
-      console.log('reducer clear');
-      return {
-        items: [],
-        loading: false,
-        error: null,
-      };
-    default:
-      return state;
+      state.loading = false;
+      state.error = null;
+    },
+    
+    searchSkillsClear: (state, action) => {
+      state.items = [];
+      state.loading = false;
+      state.error = null;
+    },
+    
+    changeSearchField: (state, action) => {
+      state.search = action.payload;
+    },
   }
-}
+})
+
+export const {
+  searchSkillsRequest,
+  searchSkillsFailure,
+  searchSkillsSuccess,
+  searchSkillsClear,
+  changeSearchField
+} = skillsSlice.actions;
+
+export default skillsSlice.reducer;

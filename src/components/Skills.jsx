@@ -1,19 +1,17 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeSearchField } from '../store/actions';
+import { changeSearchField } from '../store/skills';
 
 export default function Skills() {
-    const { items, loading, error, search } = useSelector(state => state.skills);
+    const { items, loading, error, search } = useSelector(state => state.reducer);
     const dispatch = useDispatch();
-
-    const handleSearch = evt => {
-        const { value } = evt.target;
-        dispatch(changeSearchField(value));
+    const handleSearch = (ev) => {
+        dispatch(changeSearchField(ev.target.value));
     };
-
     const hasQuery = search.trim() !== '';
+
     return (
-        <Fragment>
+        <>
             <div>
                 <input type="search" value={search} onChange={handleSearch} />
             </div>
@@ -23,6 +21,6 @@ export default function Skills() {
             <ul>
                 {items.map(o => <li key={o.id}>{o.name}</li>)}
             </ul>}
-        </Fragment>
+        </>
     );
 };
